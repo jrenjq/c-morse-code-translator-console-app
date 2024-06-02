@@ -1,2 +1,2 @@
 [flags]
-required_flags = ["-dot", "-dash", "-letter", "-word"]
+required_flags = ["-dot", "-dash", "-letter", "-word",]

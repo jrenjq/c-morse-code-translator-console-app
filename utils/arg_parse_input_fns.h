@@ -2,6 +2,10 @@
 #define ARG_PARSE_FNS
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <limits.h>
 #include <stdbool.h>
 
 struct flag_and_value {  // pair of flag and value.
@@ -13,7 +17,7 @@ struct flag_and_value {  // pair of flag and value.
 
 void print_flag_and_value(struct flag_and_value* my_flag_and_value_ptr);
 bool are_arguments_valid(int argc, char* argv[], char** argument_flags_allowed, size_t current_index);
-void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_ptr, size_t flag_and_value_array_size, size_t current_index, char* argv[]);
-bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, size_t flag_and_value_array_ptr_size, bool debug);
+void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_size, size_t current_index, char* argv[]);
+bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug);
 
 #endif

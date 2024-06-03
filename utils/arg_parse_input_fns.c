@@ -1,11 +1,5 @@
 #include "arg_parse_input_fns.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <stdbool.h>
-
 /*
 ** parameter: 
 **    - struct flag_and_value* my_flag_and_value_ptr: pointer to a struct flag_and_value.
@@ -72,7 +66,7 @@ bool are_arguments_valid(int argc, char* argv[], char** argument_flags_allowed, 
 ** returns:
 **    - void.
 */
-void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_ptr, size_t flag_and_value_array_size, size_t current_index, char* argv[]) {
+void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_size, size_t current_index, char* argv[]) {
     struct flag_and_value this_flag_and_value = {   // create a struct for flag and value pair.
                                                     .flag_argno = current_index, 
                                                     .flag = argv[current_index], 
@@ -97,7 +91,7 @@ void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_p
 ** returns:
 **    - bool: <true> for successful execution, <false> for error.
 */
-bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, size_t flag_and_value_array_ptr_size, bool debug) {
+bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug) {
     if (argc >= INT_MAX) {  // ERROR: too many user-supplied arguments.
         (void)fprintf(stderr, "ERROR: too many arguments!\n"
                               "Please ensure there are less than %d number of arguments.\n"

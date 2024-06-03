@@ -1,16 +1,5 @@
 #include "arg_get_valid_fns.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <limits.h>
-#include <string.h>
-#include <stdint.h>
-
-#define CONFIG_ARGUMENTS_PATH "config/arguments.toml"
-#define KEY_LOOKING_FOR "required_flags"
-
-FILE* read_file_and_return_file_stream(const char* FILE_PATH);
+#include "../lib/str_utils.h"
 
 /* Parameters:
 **   - const char* FILE_PATH: string for file path.
@@ -44,6 +33,8 @@ FILE* read_file_and_return_file_stream(const char* FILE_PATH) {
 ** Return:
 **   - true: if line is found.
 **   - false: line is not found.
+** Extractor Pointer:
+**   - char* save_found_line_to_str: the pointer to a string where the found line will be copied to (if it exists).
 */
 bool read_file_stream_and_copy_found_line(FILE* file_stream, char* save_found_line_to_str, const size_t MAX_CHAR_IN_EACH_LINE, char* needle) {
     // extracting the required flags from the file stream.
@@ -58,15 +49,29 @@ bool read_file_stream_and_copy_found_line(FILE* file_stream, char* save_found_li
     return false;
 }
 
-bool get_flags_from_line(struct enclosing_char_start_end* enclosing_char_start_end_struct_array_ptr,
-                         int32_t enclosing_char_start_end_struct_array_len,
+/* Parameters:
+**   - struct enclosing_char_start_end* enclosing_char_start_end_struct_array_ptr: pointer to array of structs that hold pointers to opening and closing quotes.
+**   - int32_t ENCLOSING_CHAR_START_END_STRUCT_ARRAY_LEN: length of the array of structs that hold pointers to opening and closing quotes.
+**   - char* line_of_text: line of text where the opening and closing quotes have been extracted from.
+**   - const int32_t MAX_LINE_OF_TEXT_LEN: maximum length of the line of text.
+**   - char* ENCLOSING_CHAR_STR: the enclosing character e.g. double quote that has been captured by the struct array.
+** Action:
+**   - finds all the occurrences of the enclosing characters e.g. double quotes, and copies their pointers into a struct array.
+**   - using these pointers, extract the strings that are enclosed in these enclosing characters.
+** Return:
+**   - void.
+** Extractor Pointer:
+**   - char* ENCLOSING_CHAR_STR: the enclosing character e.g. double quote that has been captured by the struct array.
+*/
+void get_flags_from_line(struct enclosing_char_start_end* enclosing_char_start_end_struct_array_ptr,
+                         const int32_t ENCLOSING_CHAR_START_END_STRUCT_ARRAY_LEN,
                          char* line_of_text,
-                         int32_t line_of_text_len,
-                         char* encasing_char,
-                         char (*copy_flags_here_str_array) [line_of_text_len]) {  // char (*p) [100] -> p is pointer to a 100 char array (anticlock spiral). for string array arguments.
-    int32_t char_count = 0;  // keep track of how many encasing_char encountered.
-    int32_t pair_count = 0;  // keep track of how many pairs of the encasing_char we have encountered.
-    while(line_of_text = strstr(line_of_text, encasing_char)) {  // move the cursor to wherever the needle character is, ends if there are no more needles.
+                         const int32_t MAX_LINE_OF_TEXT_LEN,
+                         const char* ENCLOSING_CHAR_STR,
+                         char (*copy_flags_here_str_array) [MAX_LINE_OF_TEXT_LEN]) {  // char (*p) [100] -> p is pointer to a 100 char array (anticlock spiral).
+    int32_t char_count = 0;  // keep track of how many ENCLOSING_CHAR_STR encountered.
+    int32_t pair_count = 0;  // keep track of how many pairs of the ENCLOSING_CHAR_STR we have encountered.
+    while(line_of_text = strstr(line_of_text, ENCLOSING_CHAR_STR)) {  // move the cursor to wherever the needle character is, ends if there are no more needles.
         if (++char_count % 2 == 1) {  // odd number of double quotes. must be a starting ".
             (enclosing_char_start_end_struct_array_ptr + (pair_count))->start = line_of_text;  // make a copy of the start cursor.
             // printf("%s\n", (enclosing_char_start_end_struct_array_ptr + (pair_count))->start);
@@ -79,8 +84,8 @@ bool get_flags_from_line(struct enclosing_char_start_end* enclosing_char_start_e
     }
 
     // // extract string from line via structs of start and end pointers to their double quotes.
-    char required_flags_str_array[enclosing_char_start_end_struct_array_len][line_of_text_len];  // an array of strings with just enough elements to hold the required flags.
-    for (size_t i = 0; i < enclosing_char_start_end_struct_array_len; i++) {
+    char required_flags_str_array[ENCLOSING_CHAR_START_END_STRUCT_ARRAY_LEN][MAX_LINE_OF_TEXT_LEN];  // an array of strings with just enough elements to hold the required flags.
+    for (size_t i = 0; i < ENCLOSING_CHAR_START_END_STRUCT_ARRAY_LEN; i++) {
         // iterate through the structs of start and end pointers to chars on the text line.
         // ( (end pointer - start pointer) - 1 ) gives the number of chars for each required flag, this is because ...
         // " A B C D E " 
@@ -94,11 +99,72 @@ bool get_flags_from_line(struct enclosing_char_start_end* enclosing_char_start_e
 
         strcpy(required_flags_str_array[i], required_flag_str_no_quotes);  // to a local char[][].
         strcpy(copy_flags_here_str_array[i], required_flag_str_no_quotes);  // to an argument pointer to a char[].
+    }
+    return;
+}
 
-        // printf("the string at index %ld: %s\n", i, copy_flags_here_str_array[i]);
+int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH, 
+                                              const char* KEY_LOOKING_FOR, 
+                                              const char* ENCLOSING_CHAR_STR, 
+                                              const int32_t MAX_CHAR_PER_LINE,
+                                              const int32_t MAX_FLAGS_ALLOWED,
+                                              char (*retrieve_flags_str_array) [MAX_FLAGS_ALLOWED]) {
+    // opening the file with the required flags, as a pointer to a file stream.
+    FILE* read_file_stream_ptr = read_file_and_return_file_stream(CONFIG_ARGUMENTS_PATH);
+    
+    // read the file stream, given pointer to line from file. saves line from file to the pointer if found key and returns true. else returns false.
+    char line_from_file[MAX_CHAR_PER_LINE];  // avoided malloc() approach as per NASA The Power of 10: Rule 3.
+    if (read_file_stream_and_copy_found_line(read_file_stream_ptr, line_from_file, MAX_CHAR_PER_LINE, (char*)KEY_LOOKING_FOR)) {
+        int32_t enclosing_char_count = count_substrings(line_from_file, ENCLOSING_CHAR_STR, strlen(ENCLOSING_CHAR_STR));
+        // error-handling when double quotes don't match, there aren't any required flags, etc.
+        if(enclosing_char_count % 2 != 0) {  // double quotes don't form a pair.
+            (void)fprintf(stderr, "ERROR: mismatch in %s in %s.\n"
+                                    "Please ensure configuration file is as follows:\n"
+                                    "[flags]\n"
+                                    "required_flags = [%s-<flag>%s, %s-<flag>%s, %s-<flag>%s, %s-<flag>%s]!\n"
+                                    "Aborting!\n",
+                                    ENCLOSING_CHAR_STR,
+                                    CONFIG_ARGUMENTS_PATH,
+                                    ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
+                                    ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
+            return -1;
+        }
+        if(enclosing_char_count == 0) {  // there are no double quotes i.e. no required arguments.
+            (void)fprintf(stderr, "ERROR: no %s<flag>%s found in %s.\n"
+                                    "Please ensure configuration file is as follows:\n"
+                                    "[flags]\n"
+                                    "required_flags = [%s-<flag>%s, %s-<flag>%s, %s-<flag>%s, %s-<flag>%s]\n"
+                                    "Aborting!\n",
+                                    ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR,
+                                    CONFIG_ARGUMENTS_PATH,
+                                    ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
+                                    ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
+            return -1;
+        }
+
+        int32_t required_flags_count = enclosing_char_count / 2;
+
+        printf("required flags count: %d\n", required_flags_count);
+        printf("enclosing chars count: %d\n", enclosing_char_count);
+
+        struct enclosing_char_start_end enclosing_char_start_end_struct_array[required_flags_count];
+        char flags_from_line[required_flags_count][MAX_CHAR_PER_LINE];
+        get_flags_from_line(enclosing_char_start_end_struct_array, required_flags_count, line_from_file, MAX_CHAR_PER_LINE, ENCLOSING_CHAR_STR, flags_from_line);
+        for (size_t i = 0; i < required_flags_count; i++) {
+            printf("%ld has %s\n", i, flags_from_line[i]);
+            strcpy(retrieve_flags_str_array[i], flags_from_line[i]);
+        }
+        return required_flags_count;
+    } else {
+        (void)fprintf(stderr, "ERROR: key \"%s\" not found in file \"%s\".\n"
+                               "Please ensure configuration file is as follows:\n"
+                               "[flags]\n"
+                               "required_flags = [%s-<flag>%s, %s-<flag>%s, %s-<flag>%s, %s-<flag>%s]\n"
+                               "Aborting!\n", 
+                               KEY_LOOKING_FOR,
+                               CONFIG_ARGUMENTS_PATH,
+                               ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
+                               ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
+        return -1;
     }
-    for (size_t i = 0; i < enclosing_char_start_end_struct_array_len; i++) {
-        printf("the string at index %ld: %s\n", i, copy_flags_here_str_array[i]);
-    }
-    return true;
 }

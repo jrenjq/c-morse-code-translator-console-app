@@ -29,6 +29,7 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                                               const char* ENCLOSING_CHAR_STR, 
                                               const int32_t MAX_CHAR_PER_LINE,
                                               const int32_t MAX_FLAGS_ALLOWED,
-                                              char (*retrieve_flags_str_array) [MAX_FLAGS_ALLOWED]);
+                                              char (*retrieve_flags_str_array) [MAX_FLAGS_ALLOWED],
+                                              const bool DEBUG_MODE);
 
 #endif

@@ -24,7 +24,7 @@ FILE* read_file_and_return_file_stream(const char* FILE_PATH) {
 
 /* Parameters:
 **   - FILE* file_stream: pointer to the file represented as a stream.
-**   - char* save_found_line_to_str: the pointer to a string where the found line will be copied to (if it exists).
+**   - char* save_found_line_to_str: <retrieval> the pointer to a string where the found line will be copied to (if it exists).
 **   - const size_t MAX_CHAR_IN_EACH_LINE: the maximum char expected in each line.
 **   - char* needle: the keyword that determines if this line is the one we want.
 ** Action:
@@ -33,8 +33,6 @@ FILE* read_file_and_return_file_stream(const char* FILE_PATH) {
 ** Return:
 **   - true: if line is found.
 **   - false: line is not found.
-** Extractor Pointer:
-**   - char* save_found_line_to_str: the pointer to a string where the found line will be copied to (if it exists).
 */
 bool read_file_stream_and_copy_found_line(FILE* file_stream, char* save_found_line_to_str, const size_t MAX_CHAR_IN_EACH_LINE, char* needle) {
     // extracting the required flags from the file stream.
@@ -55,13 +53,12 @@ bool read_file_stream_and_copy_found_line(FILE* file_stream, char* save_found_li
 **   - char* line_of_text: line of text where the opening and closing quotes have been extracted from.
 **   - const int32_t MAX_LINE_OF_TEXT_LEN: maximum length of the line of text.
 **   - char* ENCLOSING_CHAR_STR: the enclosing character e.g. double quote that has been captured by the struct array.
+**   - char (*copy_flags_here_str_array) [MAX_LINE_OF_TEXT_LEN]: <retrieval> the array of string as an argument. the flags will be added via this.
 ** Action:
 **   - finds all the occurrences of the enclosing characters e.g. double quotes, and copies their pointers into a struct array.
 **   - using these pointers, extract the strings that are enclosed in these enclosing characters.
 ** Return:
 **   - void.
-** Extractor Pointer:
-**   - char* ENCLOSING_CHAR_STR: the enclosing character e.g. double quote that has been captured by the struct array.
 */
 void get_flags_from_line(struct enclosing_char_start_end* enclosing_char_start_end_struct_array_ptr,
                          const int32_t ENCLOSING_CHAR_START_END_STRUCT_ARRAY_LEN,
@@ -103,12 +100,33 @@ void get_flags_from_line(struct enclosing_char_start_end* enclosing_char_start_e
     return;
 }
 
+/* Parameters:
+**   - const char* CONFIG_ARGUMENTS_PATH: string of the configuration file path to be opened.
+**   - const char* KEY_LOOKING_FOR: which key in the configuration file has the desired value.
+**   - const char* ENCLOSING_CHAR_STR: what is the enclosing character that encloses the values of the list (e.g. for "value" the enclosing char would be " itself).
+**   - const int32_t MAX_CHAR_PER_LINE: the maximum possible number of characters per line.
+**   - const int32_t MAX_FLAGS_ALLOWED: the maximum possible number of flags allowed.
+**   - char (*retrieve_flags_str_array) [MAX_CHAR_PER_LINE]): <retrieval> array of string as a argument, i.e. pointer to a char array of size MAX_CHAR_PER_LINE.
+**   - const bool DEBUG_MODE: true to include debug outputs.
+** Action:
+**   - reads the configuration file.
+**   - extracts the line with the desired key.
+**   - determines how many flags there are (based on how many pairs of enclosing characters that surround the flags).
+**   - saves the pointers to these enclosing characters in preparation for flag extraction.
+**   - extracts the flags into an array of strings.
+**   - note: steps are kept separate to ensure O(n) at most.
+** Return:
+**   - int32_t -1: ERROR: something went wrong.
+**   - int32_t 0: ERROR: no flags found.
+**   - int32_t required_flags_count: number of flags found.
+*/
 int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH, 
                                               const char* KEY_LOOKING_FOR, 
                                               const char* ENCLOSING_CHAR_STR, 
                                               const int32_t MAX_CHAR_PER_LINE,
                                               const int32_t MAX_FLAGS_ALLOWED,
-                                              char (*retrieve_flags_str_array) [MAX_FLAGS_ALLOWED]) {
+                                              char (*retrieve_flags_str_array) [MAX_CHAR_PER_LINE],
+                                              const bool DEBUG_MODE) {
     // opening the file with the required flags, as a pointer to a file stream.
     FILE* read_file_stream_ptr = read_file_and_return_file_stream(CONFIG_ARGUMENTS_PATH);
     
@@ -139,20 +157,26 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                                     CONFIG_ARGUMENTS_PATH,
                                     ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
                                     ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
-            return -1;
+            return 0;
         }
 
         int32_t required_flags_count = enclosing_char_count / 2;
 
-        printf("required flags count: %d\n", required_flags_count);
-        printf("enclosing chars count: %d\n", enclosing_char_count);
+        if(DEBUG_MODE) {
+            printf("required flags count: %d\n", required_flags_count);
+            printf("enclosing chars count: %d\n", enclosing_char_count);
+        }
 
         struct enclosing_char_start_end enclosing_char_start_end_struct_array[required_flags_count];
         char flags_from_line[required_flags_count][MAX_CHAR_PER_LINE];
         get_flags_from_line(enclosing_char_start_end_struct_array, required_flags_count, line_from_file, MAX_CHAR_PER_LINE, ENCLOSING_CHAR_STR, flags_from_line);
         for (size_t i = 0; i < required_flags_count; i++) {
-            printf("%ld has %s\n", i, flags_from_line[i]);
             strcpy(retrieve_flags_str_array[i], flags_from_line[i]);
+        }
+        if(DEBUG_MODE) {
+            for (size_t i = 0; i < required_flags_count; i++) {
+                printf("%ld has %s\n", i, retrieve_flags_str_array[i]);
+            }
         }
         return required_flags_count;
     } else {

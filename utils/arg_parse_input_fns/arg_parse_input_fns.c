@@ -1,13 +1,5 @@
 #include "arg_parse_input_fns.h"
 
-/*
-** parameter: 
-**    - struct flag_and_value* my_flag_and_value_ptr: pointer to a struct flag_and_value.
-** action:
-**    - prints out a description of the flag and value.
-** returns:
-**    - void.
-*/
 void print_flag_and_value(struct flag_and_value* my_flag_and_value_ptr) {
     (void)printf("** flag_argno: %ld, flag: %s, value_argno: %ld, value: %s **\n", 
                     my_flag_and_value_ptr->flag_argno, 
@@ -18,16 +10,6 @@ void print_flag_and_value(struct flag_and_value* my_flag_and_value_ptr) {
     return;
 }
 
-/*
-** parameter: 
-**    - int argc: number of arguments received.
-**    - char* argv[]: array of argument strings.
-** action:
-**    - error-handling based on argument array and size.
-**    - intended for return value to tell main function whether to continue or abort.
-** returns:
-**    - bool: <true> when arguments are all valid. <false> when something isn't right.
-*/
 bool are_arguments_valid(int argc, char* argv[], char** argument_flags_allowed, size_t current_index) {
     // argument syntax validation.
     if (current_index + 2 > argc) {  // this is an error where in the next pair, there is a flag without a value or a value without a flag etc.
@@ -55,17 +37,6 @@ bool are_arguments_valid(int argc, char* argv[], char** argument_flags_allowed, 
     return true;
 }
 
-/*
-** parameter: 
-**    - struct flag_and_value** flag_and_value_array_ptr: a pointer to the array of struct flag_and_value header.
-**    - size_t flag_and_value_array_size: size of the flag_and_value_array (which is lost due to array-pointer decay).
-**    - size_t current_index: current index from the calling function.
-**    - char* argv[]: array of argument strings.
-** action:
-**    - creates a struct with the necessary values and places it into the flag_and_value_array via pointer.
-** returns:
-**    - void.
-*/
 void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_size, size_t current_index, char* argv[]) {
     struct flag_and_value this_flag_and_value = {   // create a struct for flag and value pair.
                                                     .flag_argno = current_index, 
@@ -77,20 +48,6 @@ void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_p
     return;
 }
 
-/*
-** parameter: 
-**    - int argc: number of arguments received.
-**    - char* argv[]: array of argument strings.
-**    - struct flag_and_value* flag_and_value_array_ptr: pointer to header of flag_and_value array.
-**    - size_t flag_and_value_array_ptr_size: size of flag_and_value array.
-**    - bool debug: <true> to display debug info on console, <false> to omit.
-** action:
-**    - does argument error-handling function.
-**    - populate arguments into struct flag_and_value array.
-**    - (optional) displays debugging information.
-** returns:
-**    - bool: <true> for successful execution, <false> for error.
-*/
 bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug) {
     if (argc >= INT_MAX) {  // ERROR: too many user-supplied arguments.
         (void)fprintf(stderr, "ERROR: too many arguments!\n"

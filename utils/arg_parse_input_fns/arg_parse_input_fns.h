@@ -35,7 +35,7 @@ void print_flag_and_value(struct flag_and_value* my_flag_and_value_ptr);
 ** returns:
 **    - bool: <true> when arguments are all valid. <false> when something isn't right.
 */
-bool are_arguments_valid(int argc, char* argv[], char** argument_flags_allowed, size_t current_index);
+bool are_arguments_valid(int argc, char* argv[], size_t current_index);
 
 /*
 ** parameter: 
@@ -64,6 +64,6 @@ void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_p
 ** returns:
 **    - bool: <true> for successful execution, <false> for error.
 */
-bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug);
+bool parse_user_arguments(int argc, char** argv, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug);
 
 #endif

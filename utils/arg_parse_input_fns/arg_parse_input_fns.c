@@ -10,7 +10,7 @@ void print_flag_and_value(struct flag_and_value* my_flag_and_value_ptr) {
     return;
 }
 
-bool are_arguments_valid(int argc, char* argv[], char** argument_flags_allowed, size_t current_index) {
+bool are_arguments_valid(int argc, char* argv[], size_t current_index) {
     // argument syntax validation.
     if (current_index + 2 > argc) {  // this is an error where in the next pair, there is a flag without a value or a value without a flag etc.
         (void)fprintf(stderr, "ERROR: missing arguments before/after argument \"%s\" at argument number %ld.\n"
@@ -48,7 +48,7 @@ void populate_flag_and_value_array(struct flag_and_value* flag_and_value_array_p
     return;
 }
 
-bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug) {
+bool parse_user_arguments(int argc, char** argv, struct flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_ptr_size, bool debug) {
     if (argc >= INT_MAX) {  // ERROR: too many user-supplied arguments.
         (void)fprintf(stderr, "ERROR: too many arguments!\n"
                               "Please ensure there are less than %d number of arguments.\n"
@@ -58,7 +58,7 @@ bool parse_user_arguments(int argc, char** argv, char** argument_flags_allowed, 
     }
     if (argc > 1) {  // only do so if there are user-supplied arguments (1st arg is file name) AND not more than INT_MAX.
         for (size_t i = 1; i < argc; i += 2) {  // argv is either { <file name> <flag> <value> <flag> <value> ... } or { <file name> }. start from [1] and look at 2 at a time.
-            if (!are_arguments_valid(argc, argv, argument_flags_allowed, i)) {  // argument error-handling function.
+            if (!are_arguments_valid(argc, argv, i)) {  // argument error-handling function.
                 return false;
             }
             populate_flag_and_value_array(flag_and_value_array_ptr, flag_and_value_array_ptr_size, i, argv); // save arguments into struct array function.

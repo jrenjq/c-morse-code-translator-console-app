@@ -1,5 +1,6 @@
 #include "./utils/arg_parse_input_fns/arg_parse_input_fns.h"
 #include "./utils/arg_get_valid_fns/arg_get_valid_fns.h"
+#include "./utils/arg_check_input_is_valid_fns/arg_check_input_is_valid.h"
 #include "./utils/hash_utils/hash_utils.h"
 #include "./defines/debugging_def.h"
 #include "./defines/program_operation_def.h"
@@ -39,22 +40,8 @@ int main(int argc, char** argv) {
         }
     }
 
-    // check if flags entered by the users are among the allowed flags.
-    for (size_t i = 0; i < FLAG_AND_VALUE_ARRAY_SIZE; i++) {
-        hashable_string_struct* temp = NULL;
-        HASH_FIND_STR(flags, user_input_arguments_struct_array[i].flag, temp);
-        if (TOP_LEVEL_DEBUG_MODE) printf("<main> [%ld] checking if %s exists in hash...", i, temp->string_malloc);
-        if (temp == NULL) {
-            (void)fprintf(stderr, "ERROR: invalid flag \"%s\" found in arguments.\n"
-                                  "Please ensure that flags used exists in the allowed arguments file (config/arguments.toml)!\n"
-                                  "Aborting!\n", 
-                                  user_input_arguments_struct_array[i].flag);
-            return EXIT_FAILURE;
-        } else {
-            if (TOP_LEVEL_DEBUG_MODE) printf("found!\n");
-        }
-    }
-    if (TOP_LEVEL_DEBUG_MODE) printf("All flags are valid!\n");
+    // check if user has entered any flags that is not an allowed flag.
+    if (!check_user_flags_to_allowed_flags(user_input_arguments_struct_array, FLAG_AND_VALUE_ARRAY_SIZE, &flags, INNER_FNS_DEBUG_MODE)) return EXIT_FAILURE;
     
     return EXIT_SUCCESS;
 }

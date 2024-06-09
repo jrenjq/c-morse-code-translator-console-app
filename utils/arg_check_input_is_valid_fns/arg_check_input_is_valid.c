@@ -1,6 +1,6 @@
 #include "arg_check_input_is_valid.h"
 
-bool check_user_flags_to_allowed_flags(struct flag_and_value* user_input_flag_and_value_array,
+bool check_user_flags_to_allowed_flags(flag_and_value* user_input_flag_and_value_array,
                                        const int32_t USER_INPUT_FLAG_AND_VALUE_ARRAY_LEN,
                                        hashable_string_struct** hash_table_head_ptr_ptr,
                                        const bool DEBUG_MODE) {

@@ -1,21 +1,9 @@
 #include "arg_get_allowed_flags_fns.h"
 #include "../str_utils/str_utils.h"
+#include "../file_utils/file_utils.h"
 
 #include <limits.h>
 #include <string.h>
-
-FILE* read_file_and_return_file_stream(const char* FILE_PATH) {
-    // opening the file with the required flags.
-    FILE* file_ptr = fopen(FILE_PATH, "r");  // open file containing required flags as a stream.
-    if(file_ptr == NULL) {  // ERROR: the file specified doesn't exist.
-        (void)fprintf(stderr, "ERROR: cannot open file in \"%s\" directory.\n"
-                              "Please ensure file exists/is named correctly!\n"
-                              "Aborting!\n", 
-                              FILE_PATH);
-        return NULL;
-    }
-    return file_ptr;  // returns pointer to stream representing the file.
-}
 
 bool read_file_stream_and_copy_found_line(FILE* file_stream, char* save_found_line_to_str, const size_t MAX_CHAR_IN_EACH_LINE, char* needle) {
     // extracting the required flags from the file stream.
@@ -95,6 +83,7 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                                     CONFIG_ARGUMENTS_PATH,
                                     ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
                                     ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
+            fclose(read_file_stream_ptr);
             return -1;
         }
         if(enclosing_char_count == 0) {  // there are no double quotes i.e. no required arguments.
@@ -107,6 +96,7 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                                     CONFIG_ARGUMENTS_PATH,
                                     ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
                                     ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
+            fclose(read_file_stream_ptr);
             return 0;
         }
 
@@ -128,6 +118,7 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                 printf("%ld has %s\n", i, retrieve_flags_str_array[i]);
             }
         }
+        fclose(read_file_stream_ptr);
         return required_flags_count;
     } else {
         (void)fprintf(stderr, "ERROR: key \"%s\" not found in file \"%s\".\n"
@@ -139,6 +130,7 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                                CONFIG_ARGUMENTS_PATH,
                                ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, 
                                ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR, ENCLOSING_CHAR_STR);
+        fclose(read_file_stream_ptr);
         return -1;
     }
 }

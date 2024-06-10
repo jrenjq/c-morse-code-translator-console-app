@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     if (TOP_LEVEL_DEBUG_MODE) {
         hashable_string_struct* temp = NULL;
         HASH_FIND_STR(flags, "-word", temp);
-        if (temp) printf("flag value is %s\n", temp->string_malloc);
+        if (temp) printf("<main> found flag value %s in hash!\n", temp->string_malloc);
     }
 
     // get arguments that users entered as an array of structs.

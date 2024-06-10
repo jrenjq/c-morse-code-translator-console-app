@@ -12,16 +12,6 @@ struct enclosing_char_start_end {
 };
 
 /* Parameters:
-**   - const char* FILE_PATH: string for file path.
-** Action:
-**   - accepts a file via its file path and returns its stream.
-** Return:
-**   - NULL: if error when reading specified file.
-**   - FILE*: if file exists and can be read.
-*/
-FILE* read_file_and_return_file_stream(const char* FILE_PATH);
-
-/* Parameters:
 **   - FILE* file_stream: pointer to the file represented as a stream.
 **   - char* save_found_line_to_str: <retrieval> the pointer to a string where the found line will be copied to (if it exists).
 **   - const size_t MAX_CHAR_IN_EACH_LINE: the maximum char expected in each line.

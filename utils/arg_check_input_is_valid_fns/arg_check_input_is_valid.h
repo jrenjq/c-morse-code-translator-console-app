@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../arg_parse_input_fns/arg_parse_input_fns.h"
 #include "../hash_utils/hash_utils.h"
 #include "../../lib/hash_map_lib/src/uthash.h"
-#include "../arg_parse_input_fns/arg_parse_input_fns.h"
 
 /*
 ** parameter: 

@@ -66,7 +66,7 @@ int32_t get_flags_from_config_file_by_pointer(const char* CONFIG_ARGUMENTS_PATH,
                                               char (*retrieve_flags_str_array) [MAX_CHAR_PER_LINE],
                                               const bool DEBUG_MODE) {
     // opening the file with the required flags, as a pointer to a file stream.
-    FILE* read_file_stream_ptr = read_file_and_return_file_stream(CONFIG_ARGUMENTS_PATH);
+    FILE* read_file_stream_ptr = open_file_and_return_file_stream(CONFIG_ARGUMENTS_PATH, "r");
     
     // read the file stream, given pointer to line from file. saves line from file to the pointer if found key and returns true. else returns false.
     char line_from_file[MAX_CHAR_PER_LINE];  // avoided malloc() approach as per NASA The Power of 10: Rule 3.

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+
 #include "../arg_parse_input_fns/arg_parse_input_fns.h"
 #include "../../defines/program_operation_def.h"
 

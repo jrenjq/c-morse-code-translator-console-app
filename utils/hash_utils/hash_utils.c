@@ -1,5 +1,7 @@
 #include "hash_utils.h"
 
+#include <string.h>
+
 bool add_string_array_into_hash(hashable_string_struct** head_ptr,  // ptr to ptr of the hash head, since hash add fn needs actual pointer but C arg is pass-by-value.
                                 const int32_t STR_ARR_LEN,
                                 const int32_t PER_STR_LEN,

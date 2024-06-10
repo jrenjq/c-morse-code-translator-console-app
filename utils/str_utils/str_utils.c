@@ -1,5 +1,7 @@
 #include "str_utils.h"
 
+#include <string.h>
+
 int32_t count_substrings(char* haystack, const char* NEEDLE, int32_t needle_length) {
     // find how many NEEDLEs there are in the haystack.
     int32_t needle_count = 0;

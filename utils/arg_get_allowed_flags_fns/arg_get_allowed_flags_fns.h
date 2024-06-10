@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <limits.h>
-#include <string.h>
 #include <stdint.h>
 
 struct enclosing_char_start_end {

@@ -1,6 +1,9 @@
 #include "arg_get_allowed_flags_fns.h"
 #include "../str_utils/str_utils.h"
 
+#include <limits.h>
+#include <string.h>
+
 FILE* read_file_and_return_file_stream(const char* FILE_PATH) {
     // opening the file with the required flags.
     FILE* file_ptr = fopen(FILE_PATH, "r");  // open file containing required flags as a stream.

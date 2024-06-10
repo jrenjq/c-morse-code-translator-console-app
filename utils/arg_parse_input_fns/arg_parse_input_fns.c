@@ -1,5 +1,8 @@
 #include "arg_parse_input_fns.h"
 
+#include <string.h>
+#include <limits.h>
+
 void print_flag_and_value(flag_and_value* my_flag_and_value_ptr) {
     (void)printf("** flag_argno: %ld, flag: %s, value_argno: %ld, value: %s **\n", 
                     my_flag_and_value_ptr->flag_argno, 

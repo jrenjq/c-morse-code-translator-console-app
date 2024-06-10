@@ -2,7 +2,6 @@
 #define HASH_UTILS
 
 #include <stdio.h>
-#include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "../../lib/hash_map_lib/src/uthash.h"

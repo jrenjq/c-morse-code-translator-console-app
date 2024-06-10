@@ -1,5 +1,8 @@
 #include "get_morse_symbols_from_args.h"
 
+#include <string.h>
+#include <limits.h>
+
 bool get_morse_symbols_from_args(morse_symbols_union* morse_symbols_union_ptr, 
                                  const flag_and_value* FLAG_AND_VALUE_ARR, 
                                  const int32_t FLAG_AND_VALUE_ARR_LEN,

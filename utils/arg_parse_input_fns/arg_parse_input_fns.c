@@ -38,12 +38,12 @@ bool are_arguments_valid(int argc, char* argv[], size_t current_index) {
 }
 
 void populate_flag_and_value_array(flag_and_value* flag_and_value_array_ptr, int32_t flag_and_value_array_size, size_t current_index, char* argv[]) {
-    flag_and_value this_flag_and_value = {   // create a struct for flag and value pair.
-                                                    .flag_argno = current_index, 
-                                                    .flag = argv[current_index], 
-                                                    .value_argno = current_index+1, 
-                                                    .value = argv[current_index+1] 
-                                                };
+    flag_and_value this_flag_and_value = {  // create a struct for flag and value pair.
+                                            .flag_argno = current_index, 
+                                            .flag = argv[current_index], 
+                                            .value_argno = current_index+1, 
+                                            .value = argv[current_index+1] 
+                                         };
     flag_and_value_array_ptr[(current_index-1)/2] = this_flag_and_value;  // saves this pair into the flag and value array via deferencing its pointer.
     return;
 }

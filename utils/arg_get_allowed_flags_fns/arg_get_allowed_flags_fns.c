@@ -1,4 +1,4 @@
-#include "arg_get_valid_fns.h"
+#include "arg_get_allowed_flags_fns.h"
 #include "../str_utils/str_utils.h"
 
 FILE* read_file_and_return_file_stream(const char* FILE_PATH) {

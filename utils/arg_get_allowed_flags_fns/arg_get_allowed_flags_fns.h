@@ -1,5 +1,5 @@
-#ifndef ARGS_CHECK_FNS
-#define ARGS_CHECK_FNS
+#ifndef ARGS_GET_ALLOWED_FLAGS_FN
+#define ARGS_GET_ALLOWED_FLAGS_FN
 
 #include <stdio.h>
 #include <stdlib.h>

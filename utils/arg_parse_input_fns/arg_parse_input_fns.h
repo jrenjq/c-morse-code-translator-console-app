@@ -6,12 +6,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct flag_and_value {  // pair of flag and value.
-    size_t flag_argno;   // indicates which argument number the FLAG is.
-    char* flag;          // an argument which starts with '-'.
-    size_t value_argno;  // indicates which argument number the VALUE is.
-    char* value;         // an argument that follows a flag.
-} flag_and_value;
+#include "../../structs/structs_definitions.h"
 
 /*
 ** parameter: 

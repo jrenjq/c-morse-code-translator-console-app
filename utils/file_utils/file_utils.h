@@ -5,11 +5,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// useful for returning both pointer to string on heap & its length.
-typedef struct malloc_str {
-    char* str_ptr;
-    int32_t str_len;
-} malloc_str;
+#include "../str_utils/str_utils.h"
+#include "../../structs/structs_definitions.h"
 
 /* Parameters:
 **   - const char* FILE_PATH: string for file path.

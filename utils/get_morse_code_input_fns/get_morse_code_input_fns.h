@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 #include "../file_utils/file_utils.h"
+#include "../str_utils/str_utils.h"
 
 /*
 ** parameter: 

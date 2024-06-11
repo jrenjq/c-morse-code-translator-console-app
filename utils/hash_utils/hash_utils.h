@@ -4,12 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "../../lib/hash_map_lib/src/uthash.h"
-
-typedef struct hashable_string_struct {
-    char* string_malloc;    // the malloc-ed string.
-    UT_hash_handle hh;      // required by hash library.
-} hashable_string_struct;
+#include "../../structs/structs_definitions.h"
 
 /*
 ** parameter: 

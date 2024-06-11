@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../str_utils/str_utils.h"
+
 FILE* open_file_and_return_file_stream(const char* FILE_PATH, const char* READ_MODE) {
     // opening the file with the required flags.
     FILE* file_ptr = fopen(FILE_PATH, READ_MODE);  // open file containing required flags as a stream.

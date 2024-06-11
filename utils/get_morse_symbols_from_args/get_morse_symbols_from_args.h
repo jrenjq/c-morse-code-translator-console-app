@@ -7,6 +7,8 @@
 #include <stdbool.h>
 
 #include "../arg_parse_input_fns/arg_parse_input_fns.h"
+#include "../../structs/structs_definitions.h"
+
 #include "../../defines/program_operation_def.h"
 
 typedef union morse_symbols_union {  // using union so that the struct members can be iterated like an array.

@@ -39,7 +39,7 @@ malloc_str file_to_string(FILE* file_stream_ptr, const int32_t CHAR_IN_FILE_COUN
         if (DEBUG_MODE) printf("<in> [%ld] char copied is %c\n", i, file_as_str_on_heap[i]);
     }
     
-    malloc_str return_struct = { .str_ptr = file_as_str_on_heap, .str_len = CHAR_IN_FILE_COUNT + 1};  // string length includes null terminator.
+    malloc_str return_struct = { .str_ptr = file_as_str_on_heap, .str_len = CHAR_IN_FILE_COUNT };
     if (DEBUG_MODE) printf("<in> malloc str struct has \"%s\" as string, and a length of %d\n", return_struct.str_ptr, return_struct.str_len);
     return return_struct;
 }

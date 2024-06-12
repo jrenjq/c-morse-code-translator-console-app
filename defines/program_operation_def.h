@@ -10,6 +10,8 @@
 #define MAX_FLAGS_ALLOWED 256  // MUST ensure this value >= max expected flags possible in the config file! BUT if too big causes seg fault or value truncation.
 // morse code file processing.
 #define MORSE_CODE_INPUT_PATH "morse_code_input/morse_code_input.txt"
+#define MAX_NUM_MORSE_CODE_CHAR 5
+#define NUM_ENG_MORSE_DICT_STRUCT_MEMBERS 35
 
 // tied to ground truth constants (do not change).
 #define REQUIRED_FLAGS_COUNT 4

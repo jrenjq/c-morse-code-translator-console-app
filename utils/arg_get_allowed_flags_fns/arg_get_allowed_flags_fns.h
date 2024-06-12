@@ -6,10 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-struct enclosing_char_start_end {
-    char* start;
-    char* end;
-};
+#include "../../structs/structs_definitions.h"
 
 /* Parameters:
 **   - FILE* file_stream: pointer to the file represented as a stream.

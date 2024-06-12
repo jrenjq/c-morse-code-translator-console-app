@@ -3,6 +3,7 @@
 #include "./utils/arg_check_input_is_valid_fns/arg_check_input_is_valid.h"
 #include "./utils/get_morse_symbols_from_args/get_morse_symbols_from_args.h"
 #include "./utils/get_morse_code_input_fns/get_morse_code_input_fns.h"
+#include "./utils/translate_morse_to_char_fns/translate_morse_to_char_fns.h"
 
 #include "./utils/file_utils/file_utils.h"
 #include "./utils/hash_utils/hash_utils.h"
@@ -71,18 +72,18 @@ int main(int argc, char** argv) {
 
     // converts morse code file into a single string on the heap.
     malloc_str file_as_malloc_str_struct = file_into_malloc_str(MORSE_CODE_INPUT_PATH, INNER_FNS_DEBUG_MODE);  // MUST free malloc string pointer. (NOT IMPLEMENTED YET!!)
-    if (TOP_LEVEL_DEBUG_MODE) printf("<main> malloc str struct has \"%s\" as string, and a length of %d (incl. 1 null terminator).\n", 
-                                      file_as_malloc_str_struct.str_ptr, 
-                                      file_as_malloc_str_struct.str_len);
+    if (TOP_LEVEL_DEBUG_MODE) printf("<main> malloc str struct has \"%s\" as string, and a string length of %d.\n", 
+                                      file_as_malloc_str_struct.str_ptr, file_as_malloc_str_struct.str_len);
 
-    // count number of letter delimiters in morse code input text to determine how many distinct letters there are.
-    int32_t letter_delimiter_count = count_substrings(file_as_malloc_str_struct.str_ptr, 
-                                                      morse_symbols.morse_symbols_struct.LETTER, 
-                                                      strlen(morse_symbols.morse_symbols_struct.LETTER));
-    printf("there are %d letters here, based on the %s delimiter.\n", letter_delimiter_count, morse_symbols.morse_symbols_struct.LETTER);
+    // count number of letter & word delimiters in morse code input text.
+    int32_t letter_count = count_substrings(file_as_malloc_str_struct.str_ptr, morse_symbols.morse_symbols_struct.LETTER, strlen(morse_symbols.morse_symbols_struct.LETTER));
+    if (TOP_LEVEL_DEBUG_MODE) printf("<main> there are %d letters here, based on the %s delimiter.\n", letter_count, morse_symbols.morse_symbols_struct.LETTER);
+    int32_t word_count = count_substrings(file_as_malloc_str_struct.str_ptr, morse_symbols.morse_symbols_struct.WORD, strlen(morse_symbols.morse_symbols_struct.WORD));
+    if (TOP_LEVEL_DEBUG_MODE) printf("<main> there are %d words here, based on the %s delimiter.\n", word_count, morse_symbols.morse_symbols_struct.WORD);
 
-    // using a character buffer, convert each morse code into its letter & convert each word delimiter into a space. transfer each letter & space onto a string to get translated text.
-
+    // translate morse code string into english string.
+    malloc_str translated_str = translate_morse_to_english(&file_as_malloc_str_struct, letter_count, word_count, true);
+    // printf("translated_str has \"%s\" string, length of %d.\n", translated_str.str_ptr, translated_str.str_len);
 
     return EXIT_SUCCESS;
 }

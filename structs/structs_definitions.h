@@ -20,10 +20,16 @@ typedef struct hashable_string_struct {
     UT_hash_handle hh;      // required by hash library.
 } hashable_string_struct;
 
-// useful for returning both pointer to string on heap & its length.
+// for returning both pointer to string on heap & its length.
 typedef struct malloc_str {
     char* str_ptr;      // the malloc-ed string.
     int32_t str_len;    // length of the malloc-ed string.
 } malloc_str;
+
+// for parsing user arguments from argv.
+struct enclosing_char_start_end {
+    char* start;
+    char* end;
+};
 
 #endif

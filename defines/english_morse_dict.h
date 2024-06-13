@@ -24,6 +24,7 @@
 #define X_morse "-..-"
 #define Y_morse "-.--"
 #define Z_morse "--.."
+#define morse_0 "-----"
 #define morse_1 ".----"
 #define morse_2 "..---"
 #define morse_3 "...--"

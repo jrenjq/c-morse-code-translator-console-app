@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
     if (TOP_LEVEL_DEBUG_MODE) printf("<main> there are %d words here, based on the %s delimiter.\n", word_count, morse_symbols.morse_symbols_struct.WORD);
 
     // translate morse code string into english string.
-    malloc_str translated_str = translate_morse_to_english(&file_as_malloc_str_struct, letter_count, word_count, true);
+    malloc_str* translated_str = translate_morse_to_english(&file_as_malloc_str_struct, letter_count, word_count, true);
     // printf("translated_str has \"%s\" string, length of %d.\n", translated_str.str_ptr, translated_str.str_len);
 
     return EXIT_SUCCESS;

@@ -8,5 +8,6 @@ malloc_str* file_into_malloc_str(const char* FILE_INPUT_PATH, const bool DEBUG_M
     int32_t char_count = count_characters_in_file(morse_code_input_fs_ptr);
     if (DEBUG_MODE) printf("<in> morse code file has %d characters\n", char_count);
     malloc_str* file_as_str_ptr = file_to_string(morse_code_input_fs_ptr, char_count, DEBUG_MODE);
+    fclose(morse_code_input_fs_ptr);
     return file_as_str_ptr;
 }

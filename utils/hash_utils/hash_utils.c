@@ -21,3 +21,12 @@ bool add_string_array_into_hash(hashable_string_struct** head_ptr,  // ptr to pt
     }
     return true;
 }
+
+void free_hashable_string_in_hash(hashable_string_struct** head_ptr) {
+    hashable_string_struct* current_string_ptr;
+    hashable_string_struct* temp;
+    HASH_ITER(hh, *head_ptr, current_string_ptr, temp) {
+        HASH_DEL(*head_ptr, current_string_ptr);
+        free(current_string_ptr);
+    }
+}

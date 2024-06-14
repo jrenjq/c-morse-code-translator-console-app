@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     }
 
     // adds flags allowed strings into a hash.
-    hashable_string_struct* flags = NULL;  // MUST free allcoated memory (free both struct itself and its string member!) (NOT IMPLEMENTED YET!!)
+    hashable_string_struct* flags = NULL;  // MUST free allcoated memory (free both struct itself and its string member!)
     if (!add_string_array_into_hash(&flags, number_of_allowed_flags, MAX_CHAR_PER_LINE, flags_allowed, INNER_FNS_DEBUG_MODE)) return EXIT_FAILURE;
 
     // get arguments that users entered as an array of structs.
@@ -39,10 +39,11 @@ int main(int argc, char** argv) {
                     user_input_arguments_struct_array[i].value_argno, user_input_arguments_struct_array[i].value);
         }
     }
-
     // check if user has entered any flags that is not an allowed flag.
     if (!check_user_flags_to_allowed_flags(user_input_arguments_struct_array, FLAG_AND_VALUE_ARRAY_SIZE, &flags, INNER_FNS_DEBUG_MODE)) return EXIT_FAILURE;
-    
+    // free the hash table and malloced elements inside each item.
+    free_hashable_string_in_hash(&flags);
+
     // retrieve morse symbols that the user has defined via the arguments' flags and values & checks all required flags are entered.
     morse_symbols_union morse_symbols;
     if (!get_morse_symbols_from_args(&morse_symbols, user_input_arguments_struct_array, FLAG_AND_VALUE_ARRAY_SIZE, INNER_FNS_DEBUG_MODE)) return EXIT_FAILURE;

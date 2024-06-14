@@ -25,4 +25,14 @@ bool add_string_array_into_hash(hashable_string_struct** head_ptr,
                                 char (*str_arr)[PER_STR_LEN],
                                 const bool DEBUG_MODE);
 
+/*
+** parameter: 
+**    - hashable_string_struct** head_ptr: pointer to pointer of hash head (dereferences into the actual pointer).
+** action:
+**    - frees hash table and its items.
+** returns:
+**    - void.
+*/
+void free_hashable_string_in_hash(hashable_string_struct** head_ptr);
+
 #endif

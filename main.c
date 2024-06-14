@@ -82,5 +82,9 @@ int main(int argc, char** argv) {
     if (!write_string_to_file(MORSE_CODE_OUTPUT_PATH, translated_str_ptr->str_ptr)) return EXIT_FAILURE;
     if (TOP_LEVEL_DEBUG_MODE) printf("<main> translated string written to file \"%s\"\n", MORSE_CODE_OUTPUT_PATH);
 
+    // free malloced strings.
+    file_as_malloc_str_struct_ptr = free_malloced_str(file_as_malloc_str_struct_ptr);
+    translated_str_ptr = free_malloced_str(translated_str_ptr);
+
     return EXIT_SUCCESS;
 }

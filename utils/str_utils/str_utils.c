@@ -14,3 +14,8 @@ int32_t count_substrings(char* haystack, const char* NEEDLE, int32_t needle_leng
     return needle_count;
 }
 
+malloc_str* free_malloced_str(malloc_str* malloc_str_ptr) {
+    free(malloc_str_ptr->str_ptr);
+    free(malloc_str_ptr);
+    return (malloc_str*) NULL;
+}

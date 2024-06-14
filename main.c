@@ -5,12 +5,6 @@
 #include "./utils/get_morse_code_input_fns/get_morse_code_input_fns.h"
 #include "./utils/translate_morse_to_char_fns/translate_morse_to_char_fns.h"
 
-#include "./utils/file_utils/file_utils.h"
-#include "./utils/hash_utils/hash_utils.h"
-#include "./utils/str_utils/str_utils.h"
-
-#include "./structs/structs_definitions.h"
-
 #include "./defines/debugging_def.h"
 #include "./defines/program_operation_def.h"
 
@@ -82,6 +76,10 @@ int main(int argc, char** argv) {
     // translate morse code string into english string.
     malloc_str* translated_str_ptr = translate_morse_to_english(file_as_malloc_str_struct_ptr, letter_count, word_count, &morse_symbols, INNER_FNS_DEBUG_MODE);
     if (TOP_LEVEL_DEBUG_MODE) printf("<main> translated string is \"%s\"\n", translated_str_ptr->str_ptr);
+
+    // write the translated string into the output text file.
+    if (!write_string_to_file(MORSE_CODE_OUTPUT_PATH, translated_str_ptr->str_ptr)) return EXIT_FAILURE;
+    if (TOP_LEVEL_DEBUG_MODE) printf("<main> translated string written to file \"%s\"\n", MORSE_CODE_OUTPUT_PATH);
 
     return EXIT_SUCCESS;
 }

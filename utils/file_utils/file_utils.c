@@ -45,3 +45,17 @@ malloc_str* file_to_string(FILE* file_stream_ptr, const int32_t CHAR_IN_FILE_COU
     if (DEBUG_MODE) printf("<in> malloc str struct has \"%s\" as string, and a length of %ld\n", malloc_str_struct_ptr->str_ptr, malloc_str_struct_ptr->str_len);
     return malloc_str_struct_ptr;
 }
+
+bool write_string_to_file(const char* FILE_PATH, const char* STRING) {
+    FILE* file_ptr = open_file_and_return_file_stream(FILE_PATH, "w");
+    if(file_ptr == NULL) {  // ERROR: the file specified doesn't exist.
+        (void)fprintf(stderr, "ERROR: cannot open file in \"%s\" directory.\n"
+                              "Please ensure file exists/is named correctly!\n"
+                              "Aborting!\n", 
+                              FILE_PATH);
+        return false;
+    }
+    fprintf(file_ptr, "%s", STRING);
+    fclose(file_ptr);
+    return true;
+}

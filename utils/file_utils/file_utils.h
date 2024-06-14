@@ -43,4 +43,6 @@ int32_t count_characters_in_file(FILE* file_stream_ptr);
 */
 malloc_str* file_to_string(FILE* file_stream_ptr, const int32_t CHAR_IN_FILE_COUNT, const bool DEBUG_MODE);
 
+bool write_string_to_file(const char* FILE_PATH, const char* STRING);
+
 #endif

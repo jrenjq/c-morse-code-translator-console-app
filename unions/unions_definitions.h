@@ -5,8 +5,6 @@
 
 typedef union morse_symbols_union {  // using union so that the struct members can be iterated like an array.
     struct morse_symbols_struct { 
-        char DOT[MAX_CHAR_PER_LINE]; 
-        char DASH[MAX_CHAR_PER_LINE]; 
         char LETTER[MAX_CHAR_PER_LINE]; 
         char WORD[MAX_CHAR_PER_LINE]; 
     } morse_symbols_struct;  // holds the morse symbols in a struct. rmb to declare its variable.

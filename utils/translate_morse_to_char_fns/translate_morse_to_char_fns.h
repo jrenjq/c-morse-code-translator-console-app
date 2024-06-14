@@ -6,7 +6,9 @@
 #include <stdint.h>
 
 #include "../../structs/structs_definitions.h"
+#include "../../unions/unions_definitions.h"
 
-malloc_str* translate_morse_to_english(malloc_str* morse_malloc_str_struct, const int32_t LETTER_COUNT, const int32_t WORD_COUNT, const bool DEBUG_MODE);
+malloc_str* translate_morse_to_english(malloc_str* morse_malloc_str_struct, const int32_t LETTER_COUNT, const int32_t WORD_COUNT, 
+                                       morse_symbols_union* morse_symbols_ptr, const bool DEBUG_MODE);
 
 #endif

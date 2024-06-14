@@ -31,6 +31,16 @@ FILE* open_file_and_return_file_stream(const char* FILE_PATH, const char* READ_M
 */
 int32_t count_characters_in_file(FILE* file_stream_ptr);
 
-malloc_str file_to_string(FILE* file_stream_ptr, const int32_t CHAR_IN_FILE_COUNT, const bool DEBUG_MODE);
+/* Parameters:
+**   - FILE* file_stream_ptr: pointer to file stream pointer.
+**   - const int32_t CHAR_IN_FILE_COUNT: number of characters counted in the file.
+**   - const bool DEBUG_MODE: reveals debugging information.
+** Action:
+**   - converts a file stream into a single line of string malloced on the heap.
+**   - DOES NOT close the file stream.
+** Return:
+**   - malloc_str*: pointer to the malloced struct on the heap.
+*/
+malloc_str* file_to_string(FILE* file_stream_ptr, const int32_t CHAR_IN_FILE_COUNT, const bool DEBUG_MODE);
 
 #endif

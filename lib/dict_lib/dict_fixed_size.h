@@ -52,11 +52,11 @@ typedef struct string_dict_fixed_size {  // also malloced on the heap.
 } while(0)
 
 // gets value corresponding to found key. value is malloced on heap. malloc_value_string remains unchanged if nothing is found.
-#define get_value_fs_str_dict(string_dict_fs_ptr, key_string, malloc_value_string) do {                                             \
+#define get_value_fs_str_dict(string_dict_fs_ptr, key_string, result_char_malloc_ptr) do {                                                 \
     for (size_t i = 0; i < string_dict_fs_ptr->next_free_index; i++) {                                                              \
         if (strcmp(string_dict_fs_ptr->key[i], key_string) == 0) {                                                                  \
-            malloc_value_string = malloc(sizeof(char) * (strlen(string_dict_fs_ptr->value[i]) + 1));                                \
-            strncpy(malloc_value_string, string_dict_fs_ptr->value[i], strlen(string_dict_fs_ptr->value[i]) + 1);                   \
+            result_char_malloc_ptr = malloc(sizeof(char) * (strlen(string_dict_fs_ptr->value[i]) + 1));                                    \
+            strncpy(result_char_malloc_ptr, string_dict_fs_ptr->value[i], strlen(string_dict_fs_ptr->value[i]) + 1);                       \
             break;                                                                                                                  \
         }                                                                                                                           \
     }                                                                                                                               \

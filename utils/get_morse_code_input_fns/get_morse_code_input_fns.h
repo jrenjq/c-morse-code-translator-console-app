@@ -15,8 +15,8 @@
 ** action:
 **    - reads a file and converts text into a single string malloced onto the heap.
 ** returns:
-**    - malloc_str: struct which contains pointer to string and its length.
+**    - malloc_str*: pointer to malloced struct which contains pointer to string and its length.
 */
-malloc_str file_into_malloc_str(const char* FILE_INPUT_PATH, const bool DEBUG_MODE);
+malloc_str* file_into_malloc_str(const char* FILE_INPUT_PATH, const bool DEBUG_MODE);
 
 #endif

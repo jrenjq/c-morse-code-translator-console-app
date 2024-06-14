@@ -1,2 +1,2 @@
 [flags]
-allowed_flags = ["-dot", "-dash", "-letter", "-word"]
+allowed_flags = ["-letter", "-word"]

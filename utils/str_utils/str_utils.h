@@ -26,7 +26,7 @@ int32_t count_substrings(char* haystack, const char* NEEDLE, int32_t needle_leng
 **    - frees the string member in the malloc_str struct.
 **    - frees the malloc_str stuct itself.
 ** returns:
-**    - malloc_str*: returns NULL.
+**    - malloc_str*: returns NULL. assign function to original pointer to avoid dangling pointer.
 */
 malloc_str* free_malloced_str(malloc_str* malloc_str_ptr);
 
